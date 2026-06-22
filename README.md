@@ -44,7 +44,10 @@
 - PHP 8.2 or higher
 - Composer
 - Node.js & NPM
-- MySQL Server
+- MySQL Server using XAMPP
+
+### Database
+Create a database named `al_fateeh`
 
 ### Quick Setup
 The project includes a built-in setup script. Simply run:
@@ -55,7 +58,7 @@ composer run setup
 ### Manual Installation
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/Al-Fateeh.git
+   git clone https://github.com/Muneer282/AL-fateeh.git
    cd Al-Fateeh
    ```
 
@@ -91,17 +94,9 @@ composer run setup
    npm run build # For production
    # OR
    npm run dev # For development
+   # OR to run vite and laravel togather using this command
+   composer run dev
    ```
-
----
-
-## 📸 Screenshots | لقطات الشاشة
-
-*(Please add your project screenshots here)*
-
-| Home Page | Product List | Admin Dashboard |
-| :---: | :---: | :---: |
-| ![Home Placeholder](https://via.placeholder.com/300x200?text=Home+Page) | ![Products Placeholder](https://via.placeholder.com/300x200?text=Product+List) | ![Admin Placeholder](https://via.placeholder.com/300x200?text=Admin+Dashboard) |
 
 ---
 
@@ -113,10 +108,10 @@ Contributions are welcome! If you find any bugs or have feature suggestions, ple
 
 ## 📞 Contact | التواصل
 
-- **Name**: [Your Name Here]
-- **Email**: [Your Email Here]
-- **WhatsApp**: [Your Phone Here]
-- **GitHub**: [@YourGitHubUsername]
+- **Name**: [Muneer Ali Nagi]
+- **Email**: [muneer20dev@gmail.com]
+- **WhatsApp**: [+967 770676398]
+- **GitHub**: [Muneer282]
 
 ---
 
