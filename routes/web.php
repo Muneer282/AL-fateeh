@@ -10,6 +10,8 @@ Route::get('/', [ProductController::class, 'home'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
 Route::middleware('guest')->group(function () {
+    // لارافيل تفرق بين هولاء السطرين على حسب نوع الطلب هل post or get وليس على الاسم 
+    //  او تعطي لكل واحد منهم اسم اذا حسيت بالاتباك 
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
