@@ -55,6 +55,10 @@ RUN apk add --no-cache \
     # For image processing
     freetype-dev \
     libjpeg-turbo-dev \
+    # Temporary build tools for pecl/redis
+    autoconf \
+    g++ \
+    make \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo \
@@ -66,11 +70,11 @@ RUN apk add --no-cache \
         bcmath \
         gd \
         zip \
-        opcache
-
-# Install Redis extension
-RUN pecl install redis \
-    && docker-php-ext-enable redis
+        opcache \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    # Remove build tools to reduce image size
+    && apk del autoconf g++ make
 
 WORKDIR /var/www/html
 
