@@ -1,0 +1,68 @@
+services:
+  # ─────────────────────────────────────────
+  # Laravel Application
+  # ─────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: al-fateeh-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:80"
+    environment:
+      APP_NAME: "${APP_NAME:-Al-Fateeh}"
+      APP_ENV: "${APP_ENV:-production}"
+      APP_KEY: "${APP_KEY}"
+      APP_DEBUG: "${APP_DEBUG:-false}"
+      APP_URL: "${APP_URL:-http://localhost:8000}"
+      # Database (Neon PostgreSQL - external)
+      DB_CONNECTION: pgsql
+      DB_HOST: "${DB_HOST}"
+      DB_PORT: "${DB_PORT:-5432}"
+      DB_DATABASE: "${DB_DATABASE}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      # Session
+      SESSION_DRIVER: "${SESSION_DRIVER:-database}"
+      SESSION_LIFETIME: "${SESSION_LIFETIME:-120}"
+      # Cache
+      CACHE_STORE: "${CACHE_STORE:-database}"
+      # Queue
+      QUEUE_CONNECTION: "${QUEUE_CONNECTION:-database}"
+      # Mail
+      MAIL_MAILER: "${MAIL_MAILER:-log}"
+      MAIL_HOST: "${MAIL_HOST:-127.0.0.1}"
+      MAIL_PORT: "${MAIL_PORT:-2525}"
+      MAIL_USERNAME: "${MAIL_USERNAME}"
+      MAIL_PASSWORD: "${MAIL_PASSWORD}"
+      MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS:-hello@example.com}"
+      MAIL_FROM_NAME: "${MAIL_FROM_NAME:-Al-Fateeh}"
+    volumes:
+      - storage_data:/var/www/html/storage/app
+      - logs_data:/var/www/html/storage/logs
+    networks:
+      - al-fateeh-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# ─────────────────────────────────────────
+# Volumes (Persistent Data)
+# ─────────────────────────────────────────
+volumes:
+  storage_data:
+    driver: local
+  logs_data:
+    driver: local
+
+# ─────────────────────────────────────────
+# Networks
+# ─────────────────────────────────────────
+networks:
+  al-fateeh-network:
+    driver: bridge

@@ -1,0 +1,71 @@
+services:
+  # ─────────────────────────────────────────
+  # Al-Fateeh Laravel Application
+  # ─────────────────────────────────────────
+  - type: web
+    name: al-fateeh
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+
+    # Render يعطي الخطة المجانية 512MB RAM
+    # استخدم starter لخطة مدفوعة أو free للمجانية
+    plan: free
+
+    # Health check endpoint
+    healthCheckPath: /up
+
+    # متغيرات البيئة — الحساسة تُضاف يدوياً في Render Dashboard
+    envVars:
+      - key: APP_NAME
+        value: Al-Fateeh
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+
+      # هذه المتغيرات أضفها يدوياً في Render Dashboard (حساسة)
+      - key: APP_KEY
+        sync: false          # ← أضفها يدوياً في Dashboard
+      - key: APP_URL
+        sync: false          # ← سيكون https://al-fateeh.onrender.com
+
+      # Database (Neon PostgreSQL - External)
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        sync: false          # ← أضفها يدوياً
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        sync: false          # ← أضفها يدوياً
+      - key: DB_USERNAME
+        sync: false          # ← أضفها يدوياً
+      - key: DB_PASSWORD
+        sync: false          # ← أضفها يدوياً
+
+      # Session & Cache
+      - key: SESSION_DRIVER
+        value: database
+      - key: SESSION_LIFETIME
+        value: "120"
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+
+      # Mail
+      - key: MAIL_MAILER
+        value: smtp
+      - key: MAIL_HOST
+        sync: false
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_FROM_ADDRESS
+        sync: false
+      - key: MAIL_FROM_NAME
+        value: Al-Fateeh

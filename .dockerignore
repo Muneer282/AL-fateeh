@@ -1,0 +1,64 @@
+# ─────────────────────────────────────────
+# Docker ignored files
+# ─────────────────────────────────────────
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Node.js
+node_modules
+
+# Laravel development files
+.env
+.env.*
+!.env.example
+
+# Vendor (will be built in Docker)
+vendor
+
+# IDE and OS files
+.idea
+.vscode
+*.DS_Store
+Thumbs.db
+
+# Tests
+tests
+phpunit.xml
+*.test.js
+
+# Documentation
+*.md
+README*
+CHANGELOG*
+
+# Storage (will be mounted as volumes)
+storage/app/*
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+!storage/app/.gitignore
+!storage/logs/.gitignore
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+
+# Build artifacts
+public/hot
+public/storage
+
+# Docker itself
+Dockerfile
+docker-compose*.yml
+docker/
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Misc
+*.log
+*.cache
