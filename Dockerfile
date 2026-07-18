@@ -35,7 +35,7 @@ RUN composer dump-autoload --optimize --no-dev
 # ============================================================
 # Stage 3: Final production image
 # ============================================================
-FROM php:8.3-fpm-alpine AS production
+FROM php:8.4-fpm-alpine AS production
 
 LABEL maintainer="Al-Fateeh"
 LABEL description="Al-Fateeh Laravel Application"
