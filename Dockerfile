@@ -52,10 +52,9 @@ RUN apk add --no-cache \
     unzip \
     oniguruma-dev \
     postgresql-dev \
-    # For image processing
     freetype-dev \
     libjpeg-turbo-dev \
-    # Temporary build tools for pecl/redis
+    # Temporary build tools needed by pecl
     autoconf \
     g++ \
     make \
@@ -73,7 +72,6 @@ RUN apk add --no-cache \
         opcache \
     && pecl install redis \
     && docker-php-ext-enable redis \
-    # Remove build tools to reduce image size
     && apk del autoconf g++ make
 
 WORKDIR /var/www/html
