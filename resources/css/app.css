@@ -654,4 +654,7 @@ footer {
         padding: 8px 15px; /* Smaller for mobile */
         font-size: 0.8rem;
     }
+    .main-motorcycle{
+        margin-right: 20px;
+    }
 }
