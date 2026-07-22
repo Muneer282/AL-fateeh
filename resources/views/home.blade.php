@@ -33,7 +33,7 @@
             @forelse($products as $product)
                 <a href="https://wa.me/967778083339?text={{ urlencode('السلام عليكم، أود الاستفسار عن الدراجة: ' . $product->name . ' (' . $product->brand . ')') }}" target="_blank" class="product-card-link">
                     <div class="product-card">
-                        <img src="{{ Storage::url($product->image) }}" class="product-image" alt="{{ $product->name }}">
+                        <img src="{{ $product->image_url }}" class="product-image" alt="{{ $product->name }}">
                         <div class="product-info">
                             <h3>{{ $product->name }}</h3>
                             <p>{{ $product->brand }}</p>

@@ -41,4 +41,10 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
 
+    'imagekit' => [
+        'private_key' => env('PRIVATE_KEY'),
+        'url_endpoint' => env('URL_ENDPOINT'),
+        'upload_url' => env('KITIMAGE_UPLOAD_URL', 'https://upload.imagekit.io/api/v1/files/upload'),
+    ],
+
 ];

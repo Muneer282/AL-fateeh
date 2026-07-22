@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ImageKitService;
 
 class ProductController extends Controller
 {
@@ -53,7 +54,11 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $path = $request->file('image')->store('products', 'public');
+        $path = ImageKitService::upload($request->file('image'));
+
+        if (!$path) {
+            return back()->withErrors(['image' => 'حدث خطأ أثناء رفع الصورة لموقع ImageKit. يرجى المحاولة لاحقاً.'])->withInput();
+        }
 
         Product::create([
             'name' => $request->name,
@@ -69,7 +74,7 @@ class ProductController extends Controller
     // Admin: Delete
     public function destroy(Product $product)
     {
-        if ($product->image) {
+        if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL)) {
             Storage::disk('public')->delete($product->image);
         }
         $product->delete();

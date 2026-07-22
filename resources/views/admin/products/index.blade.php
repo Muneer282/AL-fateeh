@@ -27,7 +27,7 @@
             <tbody>
                 @forelse($products as $product)
                     <tr>
-                        <td><img src="{{ Storage::url($product->image) }}" width="80" style="border-radius: 8px;"></td>
+                        <td><img src="{{ $product->image_url }}" width="80" style="border-radius: 8px;"></td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->brand }}</td>
                         <td>${{ number_format($product->price) }}</td>
