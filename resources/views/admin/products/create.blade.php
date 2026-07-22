@@ -5,22 +5,32 @@
     <h1 style="margin-bottom: 30px;">إضافة دراجة نارية جديدة</h1>
 
     <div style="background: var(--bg-card); padding: 30px; border-radius: 20px; border: 1px solid #222;">
+        @if ($errors->any())
+            <div style="background: #cc0000; color: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: right; direction: rtl;">
+                <ul style="margin: 0; padding-right: 20px; list-style-type: disc;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="form-group">
                 <label>اسم الدراجة</label>
-                <input type="text" name="name" class="form-control" required placeholder="مثال: Yamaha R1">
+                <input type="text" name="name" class="form-control" value="{{ old('name') }}" required placeholder="مثال: Yamaha R1">
             </div>
 
             <div class="form-group">
                 <label>الماركة / النوع</label>
-                <input type="text" name="brand" class="form-control" required placeholder="مثال: Yamaha, Kawasaki, Scooter">
+                <input type="text" name="brand" class="form-control" value="{{ old('brand') }}" required placeholder="مثال: Yamaha, Kawasaki, Scooter">
             </div>
 
             <div class="form-group">
                 <label>السعر ($)</label>
-                <input type="number" name="price" class="form-control" required placeholder="0.00">
+                <input type="number" name="price" class="form-control" value="{{ old('price') }}" required placeholder="0.00">
             </div>
 
             <div class="form-group">
