@@ -16,7 +16,7 @@ class ImageKitService
     public static function upload($file)
     {
         if (!$file) {
-            return null;
+            return ['success' => false, 'error' => 'الملف المرفوع غير موجود أو غير صالح.'];
         }
 
         $fileName = time() . '_' . $file->getClientOriginalName();
@@ -24,15 +24,16 @@ class ImageKitService
         $uploadUrl = (string) config('services.imagekit.upload_url', 'https://upload.imagekit.io/api/v1/files/upload');
 
         if (empty($privateKey)) {
-            Log::error('ImageKit Upload Error: Private key (PRIVATE_KEY) is not configured in environment or services configuration.');
-            return null;
+            return [
+                'success' => false,
+                'error' => 'لم يتم إعداد المفتاح السري (PRIVATE_KEY) في خادم الاستضافة.'
+            ];
         }
 
         try {
             $contents = file_get_contents($file->getRealPath());
             if ($contents === false) {
-                Log::error('ImageKit Upload Error: Failed to read uploaded file contents.');
-                return null;
+                return ['success' => false, 'error' => 'فشل قراءة محتوى الملف المرفوع.'];
             }
 
             $response = Http::withBasicAuth($privateKey, '')
@@ -42,16 +43,25 @@ class ImageKitService
                 ]);
 
             if ($response->successful()) {
-                return $response->json()['url'];
+                return [
+                    'success' => true,
+                    'url' => $response->json()['url']
+                ];
             }
 
-            Log::error('ImageKit upload failed: Status Code: ' . $response->status() . ' - Response: ' . $response->body());
-            return null;
+            $errBody = $response->body();
+            $decoded = json_decode($errBody, true);
+            $msg = $decoded['message'] ?? $errBody;
+
+            return [
+                'success' => false,
+                'error' => 'استجابة ImageKit (' . $response->status() . '): ' . $msg
+            ];
         } catch (\Throwable $e) {
-            Log::error('ImageKit upload exception: ' . $e->getMessage(), [
-                'exception' => $e
-            ]);
-            return null;
+            return [
+                'success' => false,
+                'error' => 'حدث استثناء برميجي: ' . $e->getMessage()
+            ];
         }
     }
 }

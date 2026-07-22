@@ -54,11 +54,13 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $path = ImageKitService::upload($request->file('image'));
+        $uploadResult = ImageKitService::upload($request->file('image'));
 
-        if (!$path) {
-            return back()->withErrors(['image' => 'حدث خطأ أثناء رفع الصورة لموقع ImageKit. يرجى المحاولة لاحقاً.'])->withInput();
+        if (!$uploadResult['success']) {
+            return back()->withErrors(['image' => 'خطأ أثناء الرفع لـ ImageKit: ' . $uploadResult['error']])->withInput();
         }
+
+        $path = $uploadResult['url'];
 
         Product::create([
             'name' => $request->name,
