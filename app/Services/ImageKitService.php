@@ -20,14 +20,23 @@ class ImageKitService
         }
 
         $fileName = time() . '_' . $file->getClientOriginalName();
-        $privateKey = config('services.imagekit.private_key');
-        $uploadUrl = config('services.imagekit.upload_url', 'https://upload.imagekit.io/api/v1/files/upload');
+        $privateKey = (string) config('services.imagekit.private_key');
+        $uploadUrl = (string) config('services.imagekit.upload_url', 'https://upload.imagekit.io/api/v1/files/upload');
+
+        if (empty($privateKey)) {
+            Log::error('ImageKit Upload Error: Private key (PRIVATE_KEY) is not configured in environment or services configuration.');
+            return null;
+        }
 
         try {
-            $fileStream = fopen($file->getRealPath(), 'r');
+            $contents = file_get_contents($file->getRealPath());
+            if ($contents === false) {
+                Log::error('ImageKit Upload Error: Failed to read uploaded file contents.');
+                return null;
+            }
 
             $response = Http::withBasicAuth($privateKey, '')
-                ->attach('file', $fileStream, $fileName)
+                ->attach('file', $contents, $fileName)
                 ->post($uploadUrl, [
                     'fileName' => $fileName,
                 ]);
@@ -38,8 +47,10 @@ class ImageKitService
 
             Log::error('ImageKit upload failed: Status Code: ' . $response->status() . ' - Response: ' . $response->body());
             return null;
-        } catch (\Exception $e) {
-            Log::error('ImageKit upload exception: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            Log::error('ImageKit upload exception: ' . $e->getMessage(), [
+                'exception' => $e
+            ]);
             return null;
         }
     }
